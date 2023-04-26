@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+<body onload="resetButton()">
+    <div class="bg"></div>
+    <div class="bg bg2"></div>
+    <div class="bg bg3"></div>
+    <div class="content" id="title">
+    <h1>Tic Tac Toe</h1>
+        <div id="intro">
+        <p>This is a <b>2</b> player game<br>
+        If you don't already know how to play...<br>
+        Then your childhood <i><b>SUCKED</b></i></p> <button class="ticButton" type="button" id="playGame" onclick="playTheGame()">START</button>
+        </div>
+    </div>
+    <div class="playerContent" id="playerDisplay">
+        <p id="player"><u><b>Next Turn</b></u></p>
+        <td><button class="ticButton" id="xTurn">X</button></td>
+        <td><button class="ticButton" id="oTurn">O</button></td>
+    </div>
+    <div class="content" id="ticTable">
+        <table id="matrix">
+          <tr>
+            <td><button class="ticButton" id="b1" onclick="ticButton(b1)">1</button></td>
+            <td><button class="ticButton" id="b2" onclick="ticButton(b2)">2</button></td>
+            <td><button class="ticButton" id="b3" onclick="ticButton(b3)">3</button></td>
+          </tr>
+        
+          <tr>
+            <td><button class="ticButton" id="b4" onclick="ticButton(b4)">4</button></td>
+            <td><button class="ticButton" id="b5" onclick="ticButton(b5)">5</button></td>
+            <td><button class="ticButton" id="b6" onclick="ticButton(b6)">6</button></td>
+          </tr>
+          <tr>
+            <td><button class="ticButton" id="b7" onclick="ticButton(b7)">7</button></td>
+            <td><button class="ticButton" id="b8" onclick="ticButton(b8)">8</button></td>
+            <td><button class="ticButton" id="b9" onclick="ticButton(b9)">9</button></td>
+          </tr>
+        </table>
+      </div>
+      <div class="content" id="resultDisplay" onload="style">
+        <p> </p>
+        <p> </p>
+        <p id="resultMessage"></p>
+        <p> </p>
+        <p> </p>
+      </div>
+      <button class="ticButton" id="resetButton" onclick="playTheGame()">Reset</button>
+    <script>
+let buttonCounter = 0
+let xTics = ["X"]
+let oTics = ["O"]
+
+document.getElementById("xTurn").style.backgroundColor = "#0099ff"
+        function playTheGame()
+        {
+            const remainingButtons = ["b1","b2","b3","b4","b5","b6","b7","b8","b9"]
+            document.getElementById("title").style.display="none"
+            document.getElementById("intro").style.display="none"
+            document.getElementById("resultDisplay").style.display="none"
+            document.getElementById("ticTable").style.display="block"
+            document.getElementById("resetButton").style.display="block"
+            document.getElementById("playerDisplay").style.display="block"
+            for (let turnCounter = 0; turnCounter < 9; turnCounter++){
+                document.getElementById(remainingButtons[turnCounter]).innerHTML = " "
+                document.getElementById(remainingButtons[turnCounter]).disabled = false
+                document.getElementById(remainingButtons[turnCounter]).style.backgroundColor = "#00000080"
+            }
+            let buttonCounter = 1
+            xTics = xTics.slice(0, 1)
+            oTics = oTics.slice(0, 1)
+
+        }
+
+        function ticButton(currentButton)
+        {
+            const button = currentButton.id
+            const position = currentButton.id.replace('b', '')
+            document.getElementById(currentButton.id).disabled = true
+                if (buttonCounter % 2 == 0){
+                        document.getElementById(currentButton.id).innerHTML = "X"
+                        document.getElementById(currentButton.id).style.backgroundColor = "#0099ff"
+                        document.getElementById("xTurn").style.backgroundColor = "#00000080"
+                        document.getElementById("oTurn").style.backgroundColor = "#ccc433"
+                        let aCount = (buttonCounter / 2) + 1
+                        xTics[aCount] = parseInt(position)
+                        checkWin(xTics)
+                }
+                else {
+                        document.getElementById(currentButton.id).innerHTML = "O"
+                        document.getElementById(currentButton.id).style.backgroundColor = "#ccc433"
+                        document.getElementById("oTurn").style.backgroundColor = "#00000080"
+                        document.getElementById("xTurn").style.backgroundColor = "#0099ff"
+                        let aCount = ((buttonCounter - 1) / 2) + 1
+                        oTics[aCount] = parseInt(position)
+                        checkWin(oTics)
+                }
+            buttonCounter++
+        }
+
+        function checkWin(checker){
+            let winningCombos = ["123", "147", "159", "258", "357", "369", "456", "789"]
+            for (let wCount = 0; wCount < winningCombos.length; wCount++){
+                let variable = "winningCombo" + wCount
+                variable = winningCombos[wCount].split("")
+                let winCount = 0
+                for (let iCount = 0; iCount < variable.length; iCount++){
+                    if (checker.includes(parseInt(variable[iCount]))) {
+                        winCount += 1
+                    }
+                }
+                let winningPlayer = checker[0]
+                console.log(winningPlayer)
+                if (winCount == 3){
+                    document.getElementById("resultDisplay").style.display="block"
+                    document.getElementById("resultMessage").innerHTML= "<br>" + "<br>" + winningPlayer + " takes the win!" + "<br>" + "<br>"
+                }
+
+            }
+        }
+
+        function resetButton()
+        {
+            document.getElementById("intro").style.display="block"
+            document.getElementById("ticTable").style.display="none"
+            document.getElementById("resetButton").style.display="none"
+            document.getElementById("resultDisplay").style.display="none"
+            document.getElementById("playerDisplay").style.display="none"
+        }
+        
+     </script>
+</body>
+</html>
